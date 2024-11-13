@@ -129,6 +129,20 @@ def transact():
     id_token = session.get('user')
     if not id_token:
         return redirect(url_for('login'))
+    if request.method == "POST":
+        transaction_type = request.form.get("transaction")
+        amount = request.form.get("amount")
+        # try:
+        #     # balance = Accounts.query.where(Accounts.user_id == id_token).first()
+        #     # new_user = Users(
+        #     #     account_id=account_id,transaction_type=transaction_type,amount=amount
+        #     #     )
+        #     # db.session.add(new_user)
+        #     # db.session.commit()
+        #     # return redirect("/transactions")
+        # except Exception as e:
+        #     return f"There was an error while signing you up, please try again: {e}"
+
     
     return render_template("transact.html")
 
