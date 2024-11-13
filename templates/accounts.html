@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block body %}
-<h1>Accounts page</h1>
+<div class="nav">
+    <div>Accounts</div>
+    <form action="/logout">
+        <input type="submit" value="Log out">
+    </form>
+</div>
+<a href="/transactions/transact">
+    Transact ->
+</a>
 {% endblock %}
