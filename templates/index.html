@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>My Bank</title>
+<title>My Bank - Login</title>
 {% endblock %}
 
 {% block body %}
@@ -16,6 +16,13 @@
     <input type="password" name="password">
     <br>
     <a href="{{ url_for('signup') }}">Don't have account? Create account here</a>
-    <input type="submit">
+    <br>
+    <input type="submit" value="Login">
 </form>
+<div class="nav">
+    <div>Accounts</div>
+    <form action="/logout">
+        <input type="submit" value="Log out">
+    </form>
+</div>    
 {% endblock %}

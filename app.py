@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
-import pyrebase
+import pyrebase 
 import firebase_admin
 from firebase_admin import credentials
 import os
@@ -121,5 +121,25 @@ def accounts():
     
     return render_template("accounts.html")
 
+@app.route('/create_Account', methods = ["POST","GET"])
+def create_account(id):
+    userid = session.get('user')
+    if not userid:
+        return redirect(url_for('index'))
+    if request.method == "POST":
+        userid = session.get('user')
+        name = request.form.get('Acc_name')
+        balance = 0
+        new_account = accounts(
+            account_name = name, balance = balance, user_id = userid
+        )
+        try:
+            db.session.add(new_account)
+            db.session.commit()
+            return redirect('/accounts')
+        except Exception as error:
+            return f"Error creating an account: {error}"
+    
+    return render_template("create_acc.html", user_id = userid)
 if __name__ == "__main__":
     app.run(debug=True)

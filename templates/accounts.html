@@ -6,4 +6,10 @@
 
 {% block body %}
 <h1>Accounts page</h1>
+<div class="nav">
+    <form action="/logout" method="POST">
+        <input type="submit" value="Log out">
+    </form>
+</div>
+<p>Welcome to your accounts page.</p>
 {% endblock %}
