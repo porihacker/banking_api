@@ -132,5 +132,29 @@ def transact():
     
     return render_template("transact.html")
 
+@app.route("/delete_account/<int:id>", methods=["POST", "GET"])
+def delete_account(id):
+    if 'user' not in session:
+        return redirect(url_for('home'))
+
+    account = Accounts.query.get(id)
+    if not account:
+        flash("Account not found.", "error")
+        return redirect(url_for('home'))
+
+    if request.method == "GET":
+        flash("Are you sure you want to delete your account?", "warning")
+        return render_template("confirm_delete_account.html", account=account)
+
+    if request.method == "POST":
+        try:
+            db.session.delete(account)
+            db.session.commit()
+            flash("Account deleted successfully.", "success")
+        except Exception as e:
+            flash(f"Failed to delete account: {e}", "error")
+        return redirect(url_for('home'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
