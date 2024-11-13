@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>My Bank - Create Account</title>
+{% endblock %}
+
+{% block body %}
+<div class="nav">
+    <div>Accounts</div>
+    <form action="/logout" method="post">
+        <input type="submit" value="Log out">
+    </form>
+</div>
+<div class="content">
+    <h1>Create Account</h1>
+    <form action="/create_account" method="POST">
+        <span>Account Name:</span>
+        <br>
+        <input type="text" name="Acc_name" placeholder="Please enter the account name." required>
+        ,<br>
+        <input type="submit" value="Create Account">
+    </form>
+</div>
+{% endblock %}
