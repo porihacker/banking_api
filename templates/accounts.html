@@ -6,12 +6,24 @@
 
 {% block body %}
 <div class="nav">
-    <div>Accounts</div>
+    <div>Welcome, {{session['user']}}!</div>
     <form action="/logout">
         <input type="submit" value="Log out">
     </form>
 </div>
-<a href="/transactions/transact">
-    Transact ->
-</a>
+<div class="container">
+    <h1>Your Account Dashboard</h1>
+    <div class="account-info">
+        <h2>Account Information</h2>
+        <p><strong>Name:</strong>{{}}</p>
+        <p><strong>Email:</strong>{{}}</p>
+    </div>
+
+    <div class="overview">
+        <h2>Overview</h2>
+        <a href="/deposit" class="button-primary">Deposit</a>
+        <a href="/withdraw" class="button-primary">Withdraw</a>
+        <a href="/transactions" class="button-primary">Transaction history</a>
+    </div>
+</div>
 {% endblock %}

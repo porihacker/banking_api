@@ -65,6 +65,7 @@
     text-decoration: underline;
   }
   
+  /*buuton styling*/
   .button {
     width: 100%;
     padding: 12px;
@@ -80,9 +81,65 @@
   .button:hover {
     opacity: 0.9;
   }
-  
-  .footer {
-    font-size: 14px;
-    margin-top: 24px;
-  }
-  
+
+   /* Navbar Styles */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #00171f; 
+    padding: 15px 20px;
+    color: white;
+    font-size: 16px;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 20px;
+}
+
+.nav div {
+    display: inline;
+    padding: 10px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.nav a:hover {
+    background-color: #00a8e8; 
+    border-radius: 5px;
+}
+
+.nav form input[type="submit"] {
+    background-color: rgb(61, 60, 60); 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.nav form input[type="submit"]:hover {
+    background-color: darkred; 
+}
+
+  /* Footer Styling */
+  footer {
+      background-color: #00171f; 
+      color: white;
+      padding: 10px;
+      text-align: center;
+      margin-top: auto;
+      font-size: 14px;
+    }
+    
+.footer {
+      font-size: 14px;
+      margin-top: 24px;
+    }
+footer p {
+    margin: 0;
+}
