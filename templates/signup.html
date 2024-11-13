@@ -7,12 +7,16 @@
 {% block body %}
 <form action="/signup" method="POST">
     <h1>Sign Up</h1>
-    <span>Email:</span>
+    <label for="name">Name:</label>
+    <input type="text" name="name">
     <br>
-    <input type="text" name="email" placeholder="Please enter your email address.">
+    <label for="surname">Surname:</label>
+    <input type="text" name="surname">
     <br>
-    <span>Password</span>
+    <label for="email">Email:</label>
+    <input type="text" name="email">
     <br>
+    <label for="password">Password:</label>
     <input type="password" name="password">
     <br>
     <input type="submit">

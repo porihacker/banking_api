@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, request, url_for
+from flask import Flask, render_template, session, redirect, request, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 import pyrebase
 import firebase_admin
@@ -89,14 +89,17 @@ def signup():
         surname = request.form.get("surname")
         email = request.form.get("email")
         password = request.form.get("password")
-        new_user = Users(
-            name=name,surname=surname,email=email
-            )
         try:
             print("signing up...")
             user = auth.create_user_with_email_and_password(email,password)
             print(user)
             session['user'] = user['idToken']
+            id_token = session.get('user')
+            if not id_token:
+                return redirect(url_for('login'))
+            new_user = Users(
+                user_id=id_token,name=name,surname=surname,email=email
+                )
             db.session.add(new_user)
             db.session.commit()
             return redirect("/accounts")
@@ -120,6 +123,14 @@ def accounts():
         return redirect(url_for('login'))
     
     return render_template("accounts.html")
+
+@app.route("/transactions/transact", methods=["POST","GET"])
+def transact():
+    id_token = session.get('user')
+    if not id_token:
+        return redirect(url_for('login'))
+    
+    return render_template("transact.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
