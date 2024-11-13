@@ -123,6 +123,24 @@ def accounts():
         return redirect(url_for('login'))
     
     return render_template("accounts.html")
+@app.route('/create_acc', methods = ['POST', 'GET'])
+def create_acc():
+    userid = session.get('user')
+    if not userid:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        acc_name = request.form.get('acc_name')
+        init_balance = 0
+        new_acc = accounts(
+            user_id = userid, account_name = acc_name, balance = init_balance
+        )
+        try:
+            db.session.add(new_acc)
+            db.session.commit()
+            return redirect('/accounts')
+        except Exception as error:
+            return f'Error creating account: {error}'
+    return render_template('create_acc.html',user_id = userid)
 
 @app.route("/transactions/transact", methods=["POST","GET"])
 def transact():
