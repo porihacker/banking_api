@@ -126,9 +126,9 @@ def accounts():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-
-    return render_template("accounts.html")
-
+    
+    user_account = Accounts.query.filter_by(Accounts.date_created).all()
+    return render_template('accounts.html',accounts=user_account)   
 
 @app.route("/create_acc", methods=["POST", "GET"])
 def create_acc():
