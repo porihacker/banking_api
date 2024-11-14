@@ -15,7 +15,7 @@ config = {
     "messagingSenderId": os.environ.get("MESSAGING_SENDER_ID"),
     "appId": os.environ.get("APP_ID"),
     "measurementId": os.environ.get("MEASUREMENT_ID"),
-    "databaseURL": ""
+    "databaseURL": "",
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -23,66 +23,72 @@ auth = firebase.auth()
 
 app.secret_key = os.environ.get("BANK_KEY")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bank.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bank.db"
 db = SQLAlchemy(app)
 
+
 class Users(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(255), nullable=False)
-    surname  = db.Column(db.String(255), nullable=False)
+    surname = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
-        return f'<User {self.id}>'
+        return f"<User {self.id}>"
+
 
 class Accounts(db.Model):
-    __tablename__ = 'accounts'
+    __tablename__ = "accounts"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(255), nullable=False)
     account_name = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.Integer, nullable=False)
-    date_created = db.Column(db.DateTime, default = datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<Account {self.id}>'
+        return f"<Account {self.id}>"
+
 
 class Transactions(db.Model):
-    __tablename__ = 'transactions'
+    __tablename__ = "transactions"
 
     id = db.Column(db.Integer, primary_key=True)
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False)
     transaction_type = db.Column(db.String(120), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
     balance = db.Column(db.Integer, nullable=False)
-    date_created = db.Column(db.DateTime, default = datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<Transaction {self.id}>'
+        return f"<Transaction {self.id}>"
+
 
 cred = credentials.Certificate("firebase-adminsdk.json")
 firebase_admin.initialize_app(cred)
 
-@app.route("/", methods = ['POST','GET'])
+
+@app.route("/", methods=["POST", "GET"])
 def home():
-    if 'user' in session:
+    if "user" in session:
         return render_template("accounts.html")
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
         try:
-            user = auth.sign_in_with_email_and_password(email,password)
+            user = auth.sign_in_with_email_and_password(email, password)
             print(user)
-            session['user'] = user['idToken']
+            session["user"] = user["idToken"]
             return redirect("/accounts")
         except Exception as e:
             return f"Failed to login: {e}"
     return render_template("index.html")
 
-@app.route("/signup", methods = ["POST","GET"])
+
+@app.route("/signup", methods=["POST", "GET"])
 def signup():
     if request.method == "POST":
         name = request.form.get("name")
@@ -90,15 +96,13 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         try:
-            user = auth.create_user_with_email_and_password(email,password)
+            user = auth.create_user_with_email_and_password(email, password)
             print(user)
-            session['user'] = user['idToken']
-            id_token = session.get('user')
+            session["user"] = user["idToken"]
+            id_token = session.get("user")
             if not id_token:
-                return redirect(url_for('login'))
-            new_user = Users(
-                user_id=id_token,name=name,surname=surname,email=email
-                )
+                return redirect(url_for("login"))
+            new_user = Users(user_id=id_token, name=name, surname=surname, email=email)
             db.session.add(new_user)
             db.session.commit()
             return redirect("/accounts")
@@ -107,71 +111,74 @@ def signup():
 
     return render_template("signup.html")
 
+
 @app.route("/logout", methods=["POST"])
 def logout():
     try:
-        session.pop('user')
-        return redirect('/')
+        session.pop("user")
+        return redirect("/")
     except:
         return "Failed to logout"
-    
-@app.route("/accounts", methods = ['POST','GET'])
+
+
+@app.route("/accounts", methods=["POST", "GET"])
 def accounts():
-    id_token = session.get('user')
+    id_token = session.get("user")
     if not id_token:
-        return redirect(url_for('login'))
-    
+        return redirect(url_for("login"))
+
     return render_template("accounts.html")
-@app.route('/create_acc', methods = ['POST', 'GET'])
+
+
+@app.route("/create_acc", methods=["POST", "GET"])
 def create_acc():
-    userid = session.get('user')
+    userid = session.get("user")
     if not userid:
-        return redirect(url_for('index'))
-    if request.method == 'POST':
-        acc_name = request.form.get('acc_name')
+        return redirect(url_for("index"))
+    if request.method == "POST":
+        acc_name = request.form.get("acc_name")
         init_balance = 0
-        new_acc = accounts(
-            user_id = userid, account_name = acc_name, balance = init_balance
-        )
+        new_acc = accounts(user_id=userid, account_name=acc_name, balance=init_balance)
         try:
             db.session.add(new_acc)
             db.session.commit()
-            return redirect('/accounts')
+            return redirect("/accounts")
         except Exception as error:
-            return f'Error creating account: {error}'
-    return render_template('create_acc.html',user_id = userid)
+            return f"Error creating account: {error}"
+    return render_template("create_acc.html", user_id=userid)
 
-@app.route("/transactions/transact", methods=["POST","GET"])
+
+@app.route("/transactions/transact", methods=["POST", "GET"])
 def transact():
-    id_token = session.get('user')
+    id_token = session.get("user")
     if not id_token:
-        return redirect(url_for('login'))
+        return redirect(url_for("login"))
     # if request.method == "POST":
     #     transaction_type = request.form.get("transaction")
     #     amount = request.form.get("amount")
-        # try:
-        #     # balance = Accounts.query.where(Accounts.user_id == id_token).first()
-        #     # new_user = Users(
-        #     #     account_id=account_id,transaction_type=transaction_type,amount=amount
-        #     #     )
-        #     # db.session.add(new_user)
-        #     # db.session.commit()
-        #     # return redirect("/transactions")
-        # except Exception as e:
-        #     return f"There was an error while signing you up, please try again: {e}"
+    # try:
+    #     # balance = Accounts.query.where(Accounts.user_id == id_token).first()
+    #     # new_user = Users(
+    #     #     account_id=account_id,transaction_type=transaction_type,amount=amount
+    #     #     )
+    #     # db.session.add(new_user)
+    #     # db.session.commit()
+    #     # return redirect("/transactions")
+    # except Exception as e:
+    #     return f"There was an error while signing you up, please try again: {e}"
 
-    
     return render_template("transact.html")
+
 
 @app.route("/delete_account/<int:id>", methods=["POST", "GET"])
 def delete_account(id):
-    if 'user' not in session:
-        return redirect(url_for('home'))
+    if "user" not in session:
+        return redirect(url_for("home"))
 
     account = Accounts.query.get(id)
     if not account:
         flash("Account not found.", "error")
-        return redirect(url_for('home'))
+        return redirect(url_for("home"))
 
     if request.method == "GET":
         flash("Are you sure you want to delete your account?", "warning")
@@ -184,7 +191,25 @@ def delete_account(id):
             flash("Account deleted successfully.", "success")
         except Exception as e:
             flash(f"Failed to delete account: {e}", "error")
-        return redirect(url_for('home'))
+        return redirect(url_for("home"))
+
+
+@app.route("/accounts/<int:account_id>/balance", methods=["GET"])
+def view_balance(account_id):
+    id_token = session.get("user")
+    if not id_token:
+
+        return redirect(url_for("login"))
+
+    account = Accounts.query.filter_by(id=account_id).first()
+
+    if not account:
+
+        return jsonify({"error": "Account not found"}), 404
+
+    transactions = Transactions.query.filter_by(account_id=account_id).all()
+
+    return render_template("balance.html", account=account, transactions=transactions)
 
 
 if __name__ == "__main__":
