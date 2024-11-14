@@ -1,4 +1,5 @@
 **/.env
 **/.json
 **/env
+**/bank
 __pycache__
