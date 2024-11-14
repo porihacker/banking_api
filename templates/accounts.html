@@ -6,8 +6,8 @@
 
 {% block body %}
 <div class="nav">
-    <div>Welcome, {{session['user']}}!</div>
-    <form action="/logout">
+    <div>Welcome, ?Name!</div>
+    <form action="/logout" method="POST">
         <input type="submit" value="Log out">
     </form>
 </div>
@@ -15,8 +15,8 @@
     <h1>Your Account Dashboard</h1>
     <div class="account-info">
         <h2>Account Information</h2>
-        <p><strong>Name:</strong>{{}}</p>
-        <p><strong>Email:</strong>{{}}</p>
+        <p><strong>Name:</strong></p>
+        <p><strong>Email:</strong></p>
     </div>
 
     <div class="overview">

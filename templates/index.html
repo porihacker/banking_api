@@ -1,34 +1,36 @@
-{% extends 'base.html' %}
-
-{% block head %}
-<title>My Bank</title>
-{% endblock %}
-
-{% block body %}
-<div  class="signin">
-    <div class="form-bg">
-        <div class="header">
-        <h1 class="title">Login</h1>
-        <p class="subtitle">Please enter your credentials</p>
-        </div>
-
-        <form action="/" method="POST" class="form">
-            <div class="form-item">
-                <input type="email" name="email" placeholder="Email" class="input" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bank</title>
+</head>
+<body>
+    <div  class="signin">
+        <div class="form-bg">
+            <div class="header">
+            <h1 class="title">Login</h1>
+            <p class="subtitle">Please enter your credentials</p>
             </div>
-            <div class="form-item">
-                <input type="password" name="password" placeholder="Password" class="input" required>
+    
+            <form action="/" method="POST" class="form">
+                <div class="form-item">
+                    <input type="email" name="email" placeholder="Email" class="input" required>
+                </div>
+                <div class="form-item">
+                    <input type="password" name="password" placeholder="Password" class="input" required>
+                </div>
+            
+            <!-- <div class="text-left">
+                <a href="/reset-password" class="link">Forgot Password?</a>
+            </div> -->
+            <button type="submit" class="button">Sign in</button>
+            </form>
+    
+            <div class="footer">
+            Don't have an account? <a href="/signup" class="link">Register here.</a>
             </div>
-        
-        <!-- <div class="text-left">
-            <a href="/reset-password" class="link">Forgot Password?</a>
-        </div> -->
-        <button type="submit" class="button">Sign in</button>
-        </form>
-
-        <div class="footer">
-        Don't have an account? <a href="/signup" class="link">Register here.</a>
         </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>

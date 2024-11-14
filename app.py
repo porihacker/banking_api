@@ -108,7 +108,7 @@ def signup():
 
     return render_template("signup.html")
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     try:
         session.pop('user')
@@ -147,9 +147,9 @@ def transact():
     id_token = session.get('user')
     if not id_token:
         return redirect(url_for('login'))
-    if request.method == "POST":
-        transaction_type = request.form.get("transaction")
-        amount = request.form.get("amount")
+    # if request.method == "POST":
+    #     transaction_type = request.form.get("transaction")
+    #     amount = request.form.get("amount")
         # try:
         #     # balance = Accounts.query.where(Accounts.user_id == id_token).first()
         #     # new_user = Users(
