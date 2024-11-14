@@ -90,7 +90,6 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         try:
-            print("signing up...")
             user = auth.create_user_with_email_and_password(email,password)
             print(user)
             session['user'] = user['idToken']
