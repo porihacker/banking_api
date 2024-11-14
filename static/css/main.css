@@ -125,6 +125,26 @@
 .nav form input[type="submit"]:hover {
     background-color: darkred; 
 }
+/*create button*/
+.create-account {
+  text-align: right;
+  margin: 20px 0;
+}
+
+.create-button {
+  background-color: #00171f; 
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+  background-color: #00a8e8; 
+}
 
   /* Footer Styling */
   footer {
