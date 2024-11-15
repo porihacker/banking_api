@@ -1,3 +1,4 @@
+Acc:
 {% extends 'base.html' %}
 
 {% block head %}
@@ -5,25 +6,39 @@
 {% endblock %}
 
 {% block body %}
-<div class="nav">
-    <div>Welcome, ?Name!</div>
-    <form action="/logout" method="POST">
-        <input type="submit" value="Log out">
-    </form>
-</div>
+ 
 <div class="container">
     <h1>Your Account Dashboard</h1>
+
     <div class="account-info">
         <h2>Account Information</h2>
         <p><strong>Name:</strong></p>
         <p><strong>Email:</strong></p>
     </div>
-
+    
+    <div class="create-account">
+        <button onclick="window.location.href='/create_acc'" class="create-button">Create New Account</button>
+    </div>
+    
     <div class="overview">
         <h2>Overview</h2>
-        <a href="/deposit" class="button-primary">Deposit</a>
-        <a href="/withdraw" class="button-primary">Withdraw</a>
-        <a href="/transactions" class="button-primary">Transaction history</a>
+        <table style="width: 100%";>
+            <tr>
+                <th>Account Name</th>
+                <th>Balance</th>
+                <th>Date Created</th>
+                <th>Manage</th>
+            </tr>
+            {% for account in accounts %}
+            <tr>
+                <td>{{account.account_name}}</td>
+                <td>{{account.balance}}</td>
+                <td>{{account.date_created}}</td>
+                <td></td>
+                <td><a href="/manage_account/{{ account.id }}">Manage</a></td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
