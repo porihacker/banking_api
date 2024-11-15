@@ -128,7 +128,7 @@ def accounts():
         return redirect(url_for("login"))
     
     user_account = Accounts.query.order_by(Accounts.date_created, Accounts.balance).all()
-    return render_template('accounts.html',accounts=user_account)   
+    return render_template('accounts.html',accounts =user_account)   
 
 @app.route("/create_acc", methods=["POST", "GET"])
 def create_acc():
@@ -138,14 +138,14 @@ def create_acc():
     if request.method == "POST":
         acc_name = request.form.get("acc_name")
         init_balance = 0
-        new_acc = accounts(user_id=userid, account_name=acc_name, balance=init_balance)
+        new_acc = Accounts(user_id=userid, account_name=acc_name, balance=init_balance)
         try:
             db.session.add(new_acc)
             db.session.commit()
-            return redirect(url_for("accounts"))
+            return redirect("/accounts")
         except Exception as error:
             return f"Error creating account: {error}"
-    return render_template("create_acc.html", user_id=userid)
+    return render_template("create_acc.html")
 
 
 @app.route("/transactions/transact", methods=["POST", "GET"])

@@ -31,9 +31,9 @@ Acc:
             </tr>
             {% for account in accounts %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{account.account_name}}</td>
+                <td>{{account.balance}}</td>
+                <td>{{account.date_created}}</td>
                 <td></td>
                 <td><a href="/manage_account/{{ account.id }}">Manage</a></td>
             </tr>
