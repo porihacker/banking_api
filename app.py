@@ -126,9 +126,9 @@ def accounts():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-
-    return render_template("accounts.html")
-
+    
+    user_account = Accounts.query.order_by(Accounts.date_created, Accounts.balance).all()
+    return render_template('accounts.html',accounts=user_account)   
 
 @app.route("/create_acc", methods=["POST", "GET"])
 def create_acc():
@@ -142,7 +142,7 @@ def create_acc():
         try:
             db.session.add(new_acc)
             db.session.commit()
-            return redirect("/accounts")
+            return redirect(url_for("accounts"))
         except Exception as error:
             return f"Error creating account: {error}"
     return render_template("create_acc.html", user_id=userid)

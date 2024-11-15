@@ -7,15 +7,6 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-    <div class="nav">
-        <div><a href="/">Home</a></div>
-        <div><a href="/">Accounts</a></div>
-        <div><a href="/">Transactions</a></div>
-        <div><a href="/">Profile</a></div>
-        <form action="/logout" method="POST">
-            <input type="submit" value="Log out">
-        </form>
-    </div>
     <div class="container">
         {% block body %}{% endblock %}
     </div>
