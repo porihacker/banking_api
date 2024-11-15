@@ -126,9 +126,12 @@ def accounts():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-    
-    user_account = Accounts.query.order_by(Accounts.date_created, Accounts.balance).all()
-    return render_template('accounts.html',accounts =user_account)   
+
+    user_account = Accounts.query.order_by(
+        Accounts.date_created, Accounts.balance
+    ).all()
+    return render_template("accounts.html", accounts=user_account)
+
 
 @app.route("/create_acc", methods=["POST", "GET"])
 def create_acc():
@@ -194,8 +197,8 @@ def delete_account(id):
         return redirect(url_for("home"))
 
 
-@app.route("/accounts/<int:account_id>/balance", methods=["GET"])
-def view_balance(account_id):
+@app.route("/accounts/<int:account_id>/transactions", methods=["GET"])
+def account_transactions(account_id):
     id_token = session.get("user")
     if not id_token:
 

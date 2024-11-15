@@ -35,8 +35,8 @@ Acc:
                 <td>{{account.balance}}</td>
                 <td>{{account.date_created}}</td>
                 <td></td>
-                <td><a href="/manage_account/{{ account.id }}">Manage</a></td>
-            </tr>
+                <!-- <td><a href="/manage_account/{{ account.id }}">Manage</a></td> -->
+               <td> <a href="{{ url_for('account_transactions', account_id=account.id) }}">View Transactions</a></td>
             {% endfor %}
         </table>
     </div>
