@@ -1,165 +1,165 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .signin, .signup {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    background-color: #dee2e6;
-  }
-  
-  .form-bg {
-    background-color: white;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 24px;
-    padding: 32px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .header .title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-top: 16px;
-  }
-  
-  .header .subtitle {
-    font-size: 14px;
-    margin: 8px 0 32px;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .form-item .input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-  
-  .input:focus {
-    outline: none;
-    border-color: #00171f;
-  }
-  
-  .text-left {
-    text-align: left;
-    font-size: 14px;
-    margin-top: 8px;
-  }
-  
-  .link {
-    color: #00a8e8;
-    text-decoration: underline;
-  }
-  
-  /*buuton styling*/
-  .button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background-color: #00171f;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-  }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .button:hover {
-    opacity: 0.9;
-  }
+.signin, .signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #dee2e6;
+}
 
-   /* Navbar Styles */
+.form-bg {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  padding: 32px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.header .title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+.header .subtitle {
+  font-size: 14px;
+  margin: 8px 0 32px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-item .input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #00171f;
+}
+
+.text-left {
+  text-align: left;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.link {
+  color: #00a8e8;
+  text-decoration: underline;
+}
+
+/*buuton styling*/
+.button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #00171f;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+ /* Navbar Styles */
 .nav {
-    display: flex;
-    justify-content: space-between;
-    background-color: #00171f; 
-    padding: 15px 20px;
-    color: white;
-    font-size: 16px;
-    border-radius: 0 0 8px 8px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #00171f; 
+  padding: 15px 20px;
+  color: white;
+  font-size: 16px;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 20px;
 }
 
 .nav div {
-    display: inline;
-    padding: 10px;
+  display: inline;
+  padding: 10px;
 }
 
 .nav a {
-    text-decoration: none;
-    color: white;
-    padding: 8px;
-    font-size: 16px;
+  text-decoration: none;
+  color: white;
+  padding: 8px;
+  font-size: 16px;
 }
 
 .nav a:hover {
-    background-color: #00a8e8; 
-    border-radius: 5px;
+  background-color: #00a8e8; 
+  border-radius: 5px;
 }
 
 .nav form input[type="submit"] {
-    background-color: rgb(61, 60, 60); 
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
+  background-color: rgb(61, 60, 60); 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
 }
 
 .nav form input[type="submit"]:hover {
-    background-color: darkred; 
+  background-color: darkred; 
 }
 /*create button*/
 .create-account {
-  text-align: right;
-  margin: 20px 0;
+text-align: right;
+margin: 20px 0;
 }
 
 .create-button {
-  background-color: #00171f; 
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+background-color: #00171f; 
+color: white;
+padding: 12px 24px;
+font-size: 16px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.3s ease;
 }
 
 .create-button:hover {
-  background-color: #00a8e8; 
+background-color: #00a8e8; 
 }
 
-  /* Footer Styling */
-  footer {
-      background-color: #00171f; 
-      color: white;
-      padding: 10px;
-      text-align: center;
-      margin-top: auto;
-      font-size: 14px;
-    }
-    
+/* Footer Styling */
+footer {
+    background-color: #00171f; 
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto;
+    font-size: 14px;
+  }
+  
 .footer {
-      font-size: 14px;
-      margin-top: 24px;
-    }
+    font-size: 14px;
+    margin-top: 24px;
+  }
 footer p {
-    margin: 0;
+  margin: 0;
 }
