@@ -134,7 +134,8 @@ def accounts():
     if not id_token:
         return redirect(url_for("login"))
 
-    # user = Users.query.filter_by(user_id=id_token).first()
+    user_detail = Users.query.filter_by(user_id=id_token).first()
+
     # if not user:
     #     flash("user not found!")
     #     return redirect(url_for('logout'))
@@ -142,7 +143,7 @@ def accounts():
     user_account = Accounts.query.filter_by(user_id=id_token).order_by(
         Accounts.date_created, Accounts.balance
     ).all()
-    return render_template("accounts.html", accounts=user_account)
+    return render_template("accounts.html", accounts=user_account,user=user_detail)
 
 
 @app.route("/create_acc", methods=["GET", "POST"])
