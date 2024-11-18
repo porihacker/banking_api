@@ -6,11 +6,8 @@
 
 {% block body %}
 <div class="nav">
-    <div class="nav-title">Accounts</div>
-    <form action="/logout" method="post">
-        <input type="submit" value="Log out">
-    </form>
-</div>
+    <div class="nav-title">New Accounts</div>
+    </div>
 <div class="create_acc">
     <div class="form-bg">
         <div class="header">
@@ -22,6 +19,10 @@
             <div class="form-item">
                 <label for="acc_name" class="form-label">Account Name:</label>
                 <input type="text" name="acc_name" id="acc_name" placeholder="Enter account name" required class="input">
+                
+                <label for="balance">Initial Balance:</label>
+                <input type="number" name="balance" id="balance" min="0" class="input"><br>
+
             </div>
             <input type="submit" value="Save Account" class="button">
         </form>

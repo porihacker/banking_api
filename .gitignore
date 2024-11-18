@@ -2,4 +2,5 @@
 **/.json
 **/env
 **/bank
-__pycache__
+**/venv
+**/__pycache__
