@@ -38,7 +38,7 @@ class Users(db.Model):
 
     def __repr__(self):
         return f"<User {self.id}>"
-
+# testing
 
 class Accounts(db.Model):
     __tablename__ = "accounts"
