@@ -8,13 +8,10 @@
 <body>
     <h1>Confirm Deletion</h1>
 
-    <p>Are you sure you want to delete the account: "{{ account.account_name }}"?</p>
-    
     <form method="POST">
+        <p>Are you sure you want to delete the account: "{{ account.account_name }}"?</p>    
         <button type="submit">Yes, delete my account</button>
+        <a href="{{ url_for('accounts') }}">Cancel</a>
     </form>
-    
-    <a href="{{ url_for('home') }}">Cancel</a>
-
 </body>
 </html>

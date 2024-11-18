@@ -1,4 +1,13 @@
-from flask import Flask, render_template, session, redirect, request, url_for, flash
+from flask import (
+    Flask,
+    render_template,
+    session,
+    redirect,
+    request,
+    url_for,
+    flash,
+    jsonify,
+)
 from flask_sqlalchemy import SQLAlchemy
 import pyrebase
 import firebase_admin
@@ -40,6 +49,9 @@ class Users(db.Model):
         return f"<User {self.id}>"
 
 
+# testing
+
+
 class Accounts(db.Model):
     __tablename__ = "accounts"
 
@@ -74,17 +86,19 @@ firebase_admin.initialize_app(cred)
 @app.route("/", methods=["POST", "GET"])
 def home():
     if "user" in session:
-        return render_template("accounts.html")
+        # Redirect to accounts page if user is logged in
+        return redirect(url_for("accounts"))
+
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+        email = request.form["email"]
+        password = request.form["password"]
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            print(user)
-            session["user"] = user["idToken"]
-            return redirect("/accounts")
+            session["user"] = user["email"]
+            return redirect(url_for("accounts"))
         except Exception as e:
-            return f"Failed to login: {e}"
+            flash(f"Failed to login: {str(e)}")
+            return redirect(url_for("home"))
     return render_template("index.html")
 
 
@@ -95,16 +109,26 @@ def signup():
         surname = request.form.get("surname")
         email = request.form.get("email")
         password = request.form.get("password")
+
+        existing_user = Users.query.filter_by(email=email).first()
+        if existing_user:
+            flash("Email already exists in our system", "error")
+            return redirect("/")
+
         try:
             user = auth.create_user_with_email_and_password(email, password)
-            print(user)
-            session["user"] = user["idToken"]
+            session["user"] = user["email"]
+
             id_token = session.get("user")
             if not id_token:
                 return redirect(url_for("login"))
-            new_user = Users(user_id=id_token, name=name, surname=surname, email=email)
+
+            new_user = Users(
+                user_id=session["user"], name=name, surname=surname, email=email
+            )
             db.session.add(new_user)
             db.session.commit()
+
             return redirect("/accounts")
         except Exception as e:
             return f"There was an error while signing you up, please try again: {e}"
@@ -121,34 +145,71 @@ def logout():
         return "Failed to logout"
 
 
-@app.route("/accounts", methods=["POST", "GET"])
+@app.route("/accounts")
 def accounts():
+    # Check if user is logged in
+    if "user" not in session:
+        flash("Please log in to access your accounts")
+        return redirect(url_for("home"))  # Changed from login to home
+
+    try:
+        # Retrieve user details
+        user_detail = Users.query.filter_by(email=session["user"]).first()
+
+        if not user_detail:
+            flash("User not found. Please log in again.")
+            return redirect(url_for("home"))
+
+        # Fetch user's accounts
+        user_accounts = Accounts.query.filter_by(user_id=session["user"]).all()
+
+        # Render template with both user and accounts
+        return render_template(
+            "accounts.html",
+            user=user_detail,
+            accounts=user_accounts,
+        )
+
+    except Exception as e:
+        # Print error for debugging
+        print(f"Error in accounts route: {str(e)}")
+        flash("An error occurred. Please try again.")
+        return redirect(url_for("home"))
+
+
+@app.route("/create_acc", methods=["GET", "POST"])
+def create_acc():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
 
-    user_account = Accounts.query.order_by(
-        Accounts.date_created, Accounts.balance
-    ).all()
-    return render_template("accounts.html", accounts=user_account)
+    # user = Users.query.filter_by(user_id=id_token).first()
+    # if not user:
+    #     flash("user not found!")
+    #     return redirect(url_for('logout'))
 
-
-@app.route("/create_acc", methods=["POST", "GET"])
-def create_acc():
-    userid = session.get("user")
-    if not userid:
-        return redirect(url_for("index"))
     if request.method == "POST":
         acc_name = request.form.get("acc_name")
-        init_balance = 0
-        new_acc = Accounts(user_id=userid, account_name=acc_name, balance=init_balance)
+        balance = request.form.get("balance", type=int) or 0
+        print(" Starting  creating accout....")
+
+        new_acc = Accounts(user_id=id_token, account_name=acc_name, balance=balance)
         try:
+            print(" Am here creating accout")
             db.session.add(new_acc)
             db.session.commit()
+            flash(f"Account '{acc_name}' created successfully!", "success")
             return redirect("/accounts")
         except Exception as error:
-            return f"Error creating account: {error}"
+            flash(f"Error creating account: {error}")
+            return redirect("/create_acc")
+
     return render_template("create_acc.html")
+
+
+@app.route("/update", methods=["POST", "GET"])
+def update():
+    return render_template("update.html")
 
 
 @app.route("/transactions/transact", methods=["POST", "GET"])
@@ -185,7 +246,7 @@ def delete_account(id):
 
     if request.method == "GET":
         flash("Are you sure you want to delete your account?", "warning")
-        return render_template("confirm_delete_account.html", account=account)
+        return render_template("delete_account.html", account=account)
 
     if request.method == "POST":
         try:
@@ -194,7 +255,7 @@ def delete_account(id):
             flash("Account deleted successfully.", "success")
         except Exception as e:
             flash(f"Failed to delete account: {e}", "error")
-        return redirect(url_for("home"))
+        return redirect(url_for("accounts"))
 
 
 @app.route("/accounts/<int:account_id>/transactions", methods=["GET"])
