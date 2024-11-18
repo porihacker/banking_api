@@ -133,11 +133,6 @@ def accounts():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-
-    # user = Users.query.filter_by(user_id=id_token).first()
-    # if not user:
-    #     flash("user not found!")
-    #     return redirect(url_for('logout'))
     
     user_account = Accounts.query.filter_by(user_id=id_token).order_by(
         Accounts.date_created, Accounts.balance
@@ -150,12 +145,7 @@ def create_acc():
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-    
-    # user = Users.query.filter_by(user_id=id_token).first()
-    # if not user:
-    #     flash("user not found!")
-    #     return redirect(url_for('logout'))
-    
+        
     if request.method == "POST":
         acc_name = request.form.get("acc_name")
         balance = request.form.get("balance", type=int) or 0
