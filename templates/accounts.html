@@ -37,7 +37,8 @@
                 <td>{{account.date_created}}</td>
                 <td style="text-align: center;">
                     <a href="{{ url_for('account_transactions', account_id=account.id) }}">View Transactions</a> |
-                    <a href="{{ url_for('delete_account', id=account.id) }}">Delete</a>
+                    <a href="{{ url_for('delete_account', id=account.id) }}">Delete</a> |
+                    <a href="{{ url_for('update') }}">Update</a>
                 </td>
             </tr>
                  {% endfor %}

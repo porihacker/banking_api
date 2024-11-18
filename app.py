@@ -81,7 +81,7 @@ def home():
         password = request.form["password"]
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            session["user"] = user["idToken"]
+            session["user"] = user["email"]
             return redirect("/accounts")
         except Exception as e:
             return f"Failed to login: {e}"
@@ -103,7 +103,7 @@ def signup():
         
         try:
             user = auth.create_user_with_email_and_password(email, password)
-            session["user"] = user["idToken"]
+            session["user"] = user["email"]
 
             id_token = session.get("user")
             if not id_token:
@@ -123,12 +123,10 @@ def signup():
 @app.route("/logout", methods=["POST"])
 def logout():
     try:
-        session.pop("user", None)
+        session.pop("user")
         return redirect("/")
     except:
-        flash("Failed to logout")
-        return redirect('/')
-
+        return "Failed to logout"
 
 @app.route("/accounts")
 def accounts():
@@ -136,12 +134,12 @@ def accounts():
     if not id_token:
         return redirect(url_for("login"))
 
-    user = Users.query.filter_by(user_id=id_token).first()
-    if not user:
-        flash("user not found!")
-        return redirect(url_for('logout'))
+    # user = Users.query.filter_by(user_id=id_token).first()
+    # if not user:
+    #     flash("user not found!")
+    #     return redirect(url_for('logout'))
     
-    user_account = Accounts.query.filter_by(user_id=user.id).order_by(
+    user_account = Accounts.query.filter_by(user_id=id_token).order_by(
         Accounts.date_created, Accounts.balance
     ).all()
     return render_template("accounts.html", accounts=user_account)
@@ -153,17 +151,19 @@ def create_acc():
     if not id_token:
         return redirect(url_for("login"))
     
-    user = Users.query.filter_by(user_id=id_token).first()
-    if not user:
-        flash("user not found!")
-        return redirect(url_for('logout'))
+    # user = Users.query.filter_by(user_id=id_token).first()
+    # if not user:
+    #     flash("user not found!")
+    #     return redirect(url_for('logout'))
     
     if request.method == "POST":
         acc_name = request.form.get("acc_name")
-        balance = request.form.get("initial_balance", type=int) or 0
+        balance = request.form.get("balance", type=int) or 0
+        print(" Starting  creating accout....")
 
-        new_acc = Accounts(user_id=user.id, account_name=acc_name, balance=balance)
+        new_acc = Accounts(user_id=id_token, account_name=acc_name, balance=balance)
         try:
+            print(" Am here creating accout")
             db.session.add(new_acc)
             db.session.commit()
             flash(f"Account '{acc_name}' created successfully!", "success")
@@ -174,6 +174,9 @@ def create_acc():
         
     return render_template("create_acc.html")
 
+@app.route("/update", methods=["POST", "GET"] )
+def update():
+    return render_template("update.html")
 
 @app.route("/transactions/transact", methods=["POST", "GET"])
 def transact():
@@ -209,7 +212,7 @@ def delete_account(id):
 
     if request.method == "GET":
         flash("Are you sure you want to delete your account?", "warning")
-        return render_template("confirm_delete_account.html", account=account)
+        return render_template("delete_account.html", account=account)
 
     if request.method == "POST":
         try:
@@ -218,7 +221,7 @@ def delete_account(id):
             flash("Account deleted successfully.", "success")
         except Exception as e:
             flash(f"Failed to delete account: {e}", "error")
-        return redirect(url_for("home"))
+        return redirect(url_for("accounts"))
 
 
 @app.route("/accounts/<int:account_id>/transactions", methods=["GET"])

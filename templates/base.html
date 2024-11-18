@@ -15,9 +15,9 @@
                 <a href="/accounts" class="{% if request.endpoint == 'accounts' %}active{% endif %}">Accounts</a>
                 <a href="/create_acc" class="{% if request.endpoint == 'create_acc' %}active{% endif %}">Create Accounts</a>
                 <a href="/transactions/transact" class="{% if request.endpoint == 'transactions/transact' %}active{% endif %}">Transactions</a>
-                        <form action="/logout" method="post">
-                        <input type="submit" value="Log out">
-                    </form>
+                <form action="/logout" method="post">
+                <input type="submit" value="Log out">
+                </form>
             </div>
         </div>
     </nav> 

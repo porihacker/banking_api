@@ -2,5 +2,5 @@
 **/.json
 **/env
 **/bank
-venv/
+**/venv
 __pycache__
