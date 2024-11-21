@@ -268,10 +268,10 @@ def transact(account_id):
 
     if request.method == "POST":
         if transaction_type == "withdrawal":
-            if amount > current_bal:
+            if int(amount) > current_bal:
                 flash("You have insufficient funds to make this transaction.", "error")
             else:
-                current_bal -= current_bal - int(amount)
+                current_bal -= int(amount)
                 account.balance = current_bal
                 transaction = Transactions(account_id=account_id,transaction_type=transaction_type,amount=amount,balance=current_bal)
                 try:
