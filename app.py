@@ -85,9 +85,9 @@ firebase_admin.initialize_app(cred)
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    if "user" in session:
-        # Redirect to accounts page if user is logged in
-        return redirect(url_for("accounts"))
+    # if "user" in session:
+    #     # Redirect to accounts page if user is logged in
+    #     return redirect(url_for("accounts"))
 
     if request.method == "POST":
         email = request.form["email"]
@@ -212,28 +212,6 @@ def update():
     return render_template("update.html")
 
 
-@app.route("/transactions/transact", methods=["POST", "GET"])
-def transact():
-    id_token = session.get("user")
-    if not id_token:
-        return redirect(url_for("login"))
-    # if request.method == "POST":
-    #     transaction_type = request.form.get("transaction")
-    #     amount = request.form.get("amount")
-    # try:
-    #     # balance = Accounts.query.where(Accounts.user_id == id_token).first()
-    #     # new_user = Users(
-    #     #     account_id=account_id,transaction_type=transaction_type,amount=amount
-    #     #     )
-    #     # db.session.add(new_user)
-    #     # db.session.commit()
-    #     # return redirect("/transactions")
-    # except Exception as e:
-    #     return f"There was an error while signing you up, please try again: {e}"
-
-    return render_template("transact.html")
-
-
 @app.route("/delete_account/<int:id>", methods=["POST", "GET"])
 def delete_account(id):
     if "user" not in session:
@@ -273,8 +251,51 @@ def account_transactions(account_id):
 
     transactions = Transactions.query.filter_by(account_id=account_id).all()
 
-    return render_template("balance.html", account=account, transactions=transactions)
+    return render_template("transactions.html", account=account, transactions=transactions)
 
+@app.route("/accounts/<account_id>/transactions/transact", methods = ["POST","GET"])
+def transact(account_id):
+    id_token = session.get("user")
+    if not id_token:
+        return redirect(url_for("login"))
+    
+    account = Accounts.query.filter_by(id=account_id).first()
+    if not account:
+        return jsonify({"error": "Account not found"}), 404
+    current_bal = int(account.balance)
+    transaction_type = request.form.get("transaction")
+    amount = request.form.get("amount")
+
+    if request.method == "POST":
+        if transaction_type == "withdrawal":
+            if amount > current_bal:
+                flash("You have insufficient funds to make this transaction.", "error")
+            else:
+                current_bal -= current_bal - int(amount)
+                account.balance = current_bal
+                transaction = Transactions(account_id=account_id,transaction_type=transaction_type,amount=amount,balance=current_bal)
+                try:
+                    db.session.add(transaction)
+                    db.session.commit()
+                    flash("Transaction successfull.", "success")
+                except Exception as e:
+                    flash(f"Failed to make transaction. Please try again: {e}", "error")
+        else:
+            current_bal += int(amount)
+            account.balance = current_bal
+            transaction = Transactions(account_id=account_id,transaction_type=transaction_type,amount=amount,balance=current_bal)
+            try:
+                db.session.add(transaction)
+                db.session.commit()
+                flash("Transaction successfull.", "success")
+            except Exception as e:
+                flash(f"Failed to make transaction. Please try again: {e}", "error")
+
+        return redirect(url_for("account_transactions",account_id=account_id))
+            
+
+    else:
+        return render_template("transact.html",account=account, current_bal=current_bal)
 
 if __name__ == "__main__":
     app.run(debug=True)
