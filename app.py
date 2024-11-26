@@ -221,11 +221,8 @@ def update_acc(id):
 
     if request.method == "POST":
         account_name = request.form.get("account_name")
-        balance = request.form.get("balance", type=int)
-
         try:
             account.account_name = account_name
-            account.balance = balance
             db.session.commit()
             flash("Account updated successfully!", "success")
         except Exception as e:
