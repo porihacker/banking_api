@@ -77,6 +77,9 @@ class Transactions(db.Model):
 
     def __repr__(self):
         return f"<Transaction {self.id}>"
+    
+with app.app_context():
+    db.create_all()
 
 
 cred = credentials.Certificate("firebase-adminsdk.json")
@@ -183,11 +186,6 @@ def create_acc():
     if not id_token:
         return redirect(url_for("login"))
 
-    # user = Users.query.filter_by(user_id=id_token).first()
-    # if not user:
-    #     flash("user not found!")
-    #     return redirect(url_for('logout'))
-
     if request.method == "POST":
         acc_name = request.form.get("acc_name")
         balance = request.form.get("balance", type=int) or 0
@@ -207,9 +205,32 @@ def create_acc():
     return render_template("create_acc.html")
 
 
-@app.route("/update", methods=["POST", "GET"])
-def update():
-    return render_template("update.html")
+@app.route("/update_account/<int:id>", methods=["GET", "POST"])
+def update_acc(id): 
+    if "user" not in session:
+        flash("Please log in to update your account", "error")
+        return redirect(url_for("home"))
+
+    account = Accounts.query.get(id)
+    if not account:
+        flash("Account not found.", "error")
+        return redirect(url_for("accounts"))
+
+    if request.method == "POST":
+        account_name = request.form.get("account_name")
+        balance = request.form.get("balance", type=int)
+
+        try:
+            account.account_name = account_name
+            account.balance = balance
+            db.session.commit()
+            flash("Account updated successfully!", "success")
+        except Exception as e:
+            flash(f"Failed to update account: {e}", "error")
+        
+        return redirect(url_for("accounts"))
+
+    return render_template("update_acc.html", account=account)
 
 
 @app.route("/delete_account/<int:id>", methods=["POST", "GET"])
