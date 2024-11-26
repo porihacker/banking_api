@@ -90,6 +90,11 @@ body{
 .button:hover {
   opacity: 0.9;
 }
+/*readonly textbox*/
+input :read-only {
+  background-color:  #f0f0f0;
+  cursor: not-allowed;
+}
 
  /* Navbar Styles */
 .nav {
