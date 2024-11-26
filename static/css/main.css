@@ -4,13 +4,19 @@
   padding: 0;
 }
 
+body{
+  font-family: Arial, sans-serif;
+  background-color: #dee2e6;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .signin, .signup {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #dee2e6;
 }
 
 .form-bg {
@@ -24,29 +30,31 @@
   text-align: center;
 }
 
+/*header*/
 .header .title {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .header .subtitle {
-  font-size: 14px;
-  margin: 8px 0 32px;
+  font-size: 1rem;
+  margin: 0.5rem 0 2rem;
 }
 
+/*form*/
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .form-item .input {
   width: 100%;
-  padding: 12px;
+  padding: 1rem;
   border: 1px solid #dee2e6;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .input:focus {
@@ -54,10 +62,11 @@
   border-color: #00171f;
 }
 
+/*text styling */
 .text-left {
   text-align: left;
-  font-size: 14px;
-  margin-top: 8px;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .link {
@@ -68,11 +77,11 @@
 /*buuton styling*/
 .button {
   width: 100%;
-  padding: 12px;
+  padding: 1rem;
   border: none;
   background-color: #00171f;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: opacity 0.3s ease;
@@ -87,23 +96,23 @@
   display: flex;
   justify-content: space-between;
   background-color: #00171f; 
-  padding: 15px 20px;
+  padding: 1rem 1.25rem;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 0 0 8px 8px;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .nav div {
   display: inline;
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .nav a {
   text-decoration: none;
   color: white;
-  padding: 8px;
-  font-size: 16px;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 .nav a:hover {
@@ -114,11 +123,11 @@
 .nav form input[type="submit"] {
   background-color: rgb(61, 60, 60); 
   color: white;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -128,14 +137,14 @@
 /*create button*/
 .create-account {
 text-align: right;
-margin: 20px 0;
+margin: 1.25rem 0;
 }
 
 .create-button {
 background-color: #00171f; 
 color: white;
-padding: 12px 24px;
-font-size: 16px;
+padding: 0.75rem 1.5rem;
+font-size: 1rem;
 border: none;
 border-radius: 8px;
 cursor: pointer;
@@ -150,15 +159,15 @@ background-color: #00a8e8;
 footer {
     background-color: #00171f; 
     color: white;
-    padding: 10px;
+    padding: 0.625rem;
     text-align: center;
     margin-top: auto;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
-  
+
 .footer {
-    font-size: 14px;
-    margin-top: 24px;
+    font-size: 0.875rem;
+    margin-top: 1.5rem;
   }
 footer p {
   margin: 0;

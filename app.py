@@ -14,6 +14,9 @@ import firebase_admin
 from firebase_admin import credentials
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 config = {
