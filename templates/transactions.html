@@ -1,38 +1,37 @@
-	
-	<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        
-        <title>Account Balance</title>
-    </head>
-    <body>
-        <h1>Account Balance</h1>
-        <p>Account Name: {{ account.account_name }}</p>
-        <p>Balance: R{{ account.balance }}</p>
+{% extends 'base.html' %}
 
-        <a href="/accounts/{{account.id}}/transactions/transact">Make transaction</a>
-    
-        <h2>Transaction History</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for transaction in transactions %}
-                <tr>
-                    <td>{{ transaction.date_created }}</td>
-                    <td>{{ transaction.transaction_type }}</td>
-                    <td>${{ transaction.amount }}</td>
-                    <td>${{ transaction.balance }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </body>
-    </html>
+{% block head %}
+<title>My Bank - Transaction History</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Account Balance</h1>
+    <p>Account Name: {{ account.account_name }}</p>
+    <p>Balance: R{{ account.balance }}</p>
+
+    <a href="/accounts/{{account.id}}/transactions/transact">Make transaction</a>
+
+    <h2>Transaction History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.date_created }}</td>
+                <td>{{ transaction.transaction_type }}</td>
+                <td>${{ transaction.amount }}</td>
+                <td>${{ transaction.balance }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%% endblock}
