@@ -206,12 +206,6 @@ def create_acc():
 
     return render_template("create_acc.html")
 
-
-@app.route("/update", methods=["POST", "GET"])
-def update():
-    return render_template("update.html")
-
-
 @app.route("/delete_account/<int:id>", methods=["POST", "GET"])
 def delete_account(id):
     if "user" not in session:
