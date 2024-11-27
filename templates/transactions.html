@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="container">
+    <div class="nav">
+        <div class="nav-title">Transactions</div>
+    </div>
     <h1>Account Balance</h1>
     <p>Account Name: {{ account.account_name }}</p>
     <p>Balance: R{{ account.balance }}</p>
-
     <a href="/accounts/{{account.id}}/transactions/transact">Make transaction</a>
-
     <h2>Transaction History</h2>
     <table>
         <thead>
@@ -34,4 +36,4 @@
         </tbody>
     </table>
 </div>
-{%% endblock}
+{% endblock %}

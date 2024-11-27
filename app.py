@@ -207,32 +207,6 @@ def create_acc():
 
     return render_template("create_acc.html")
 
-
-@app.route("/update_account/<int:id>", methods=["GET", "POST"])
-def update_acc(id): 
-    if "user" not in session:
-        flash("Please log in to update your account", "error")
-        return redirect(url_for("home"))
-
-    account = Accounts.query.get(id)
-    if not account:
-        flash("Account not found.", "error")
-        return redirect(url_for("accounts"))
-
-    if request.method == "POST":
-        account_name = request.form.get("account_name")
-        try:
-            account.account_name = account_name
-            db.session.commit()
-            flash("Account updated successfully!", "success")
-        except Exception as e:
-            flash(f"Failed to update account: {e}", "error")
-        
-        return redirect(url_for("accounts"))
-
-    return render_template("update_acc.html", account=account)
-
-
 @app.route("/delete_account/<int:id>", methods=["POST", "GET"])
 def delete_account(id):
     if "user" not in session:
@@ -272,14 +246,17 @@ def account_transactions(account_id):
 
     transactions = Transactions.query.filter_by(account_id=account_id).all()
 
-    return render_template("transactions.html", account=account, transactions=transactions)
+    return render_template(
+        "transactions.html", account=account, transactions=transactions
+    )
 
-@app.route("/accounts/<account_id>/transactions/transact", methods = ["POST","GET"])
+
+@app.route("/accounts/<account_id>/transactions/transact", methods=["POST", "GET"])
 def transact(account_id):
     id_token = session.get("user")
     if not id_token:
         return redirect(url_for("login"))
-    
+
     account = Accounts.query.filter_by(id=account_id).first()
     if not account:
         return jsonify({"error": "Account not found"}), 404
@@ -294,7 +271,12 @@ def transact(account_id):
             else:
                 current_bal -= int(amount)
                 account.balance = current_bal
-                transaction = Transactions(account_id=account_id,transaction_type=transaction_type,amount=amount,balance=current_bal)
+                transaction = Transactions(
+                    account_id=account_id,
+                    transaction_type=transaction_type,
+                    amount=amount,
+                    balance=current_bal,
+                )
                 try:
                     db.session.add(transaction)
                     db.session.commit()
@@ -304,7 +286,12 @@ def transact(account_id):
         else:
             current_bal += int(amount)
             account.balance = current_bal
-            transaction = Transactions(account_id=account_id,transaction_type=transaction_type,amount=amount,balance=current_bal)
+            transaction = Transactions(
+                account_id=account_id,
+                transaction_type=transaction_type,
+                amount=amount,
+                balance=current_bal,
+            )
             try:
                 db.session.add(transaction)
                 db.session.commit()
@@ -312,11 +299,38 @@ def transact(account_id):
             except Exception as e:
                 flash(f"Failed to make transaction. Please try again: {e}", "error")
 
-        return redirect(url_for("account_transactions",account_id=account_id))
-            
+        return redirect(url_for("account_transactions", account_id=account_id))
 
     else:
-        return render_template("transact.html",account=account, current_bal=current_bal)
+        return render_template(
+            "transact.html", account=account, current_bal=current_bal
+        )
+
+
+@app.route("/update/<int:account_id>", methods=["GET", "POST"])
+def update_account(account_id):
+    if "user" not in session:
+        return redirect(url_for("home"))
+
+    account = Accounts.query.get_or_404(account_id)
+
+    # Verify the account belongs to the logged-in user
+    if account.user_id != session["user"]:
+        flash("You don't have permission to edit this account", "error")
+        return redirect(url_for("accounts"))
+
+    if request.method == "POST":
+        try:
+            account.account_name = request.form.get("account_name")
+            db.session.commit()
+            flash("Account updated successfully!", "success")
+            return redirect(url_for("accounts"))
+        except Exception as e:
+            flash(f"Error updating account: {e}", "error")
+            return redirect(url_for("update_account", account_id=account_id))
+
+    return render_template("update.html", account=account)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
